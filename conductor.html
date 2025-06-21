@@ -1,22 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>🚔 Panel del Conductor</title>
+    <title>🚔 Panel Conductor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; text-align: center; }
-        .aviso { background: #f0f0f0; padding: 20px; border-radius: 10px; margin-top: 30px; }
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        button { background: #25D366; color: white; border: none; padding: 10px 20px; margin: 10px 0; cursor: pointer; }
     </style>
 </head>
 <body>
     <h1>🚔 Panel del Conductor</h1>
-    <div class="aviso">
-        <p>Los pedidos llegarán <strong>directamente a tu WhatsApp</strong> con:</p>
-        <ul style="text-align: left;">
-            <li>📞 Número del cliente</li>
-            <li>📍 Ubicación con enlace a Google Maps</li>
-        </ul>
-        <p>No necesitas hacer nada en esta página.</p>
+    <p>Recibirás las ubicaciones por WhatsApp. Usa este panel para aceptar carreras.</p>
+    
+    <div id="solicitud" style="display: none;">
+        <p><strong>Ubicación:</strong> <span id="ubicacionCliente"></span></p>
+        <button onclick="aceptarCarrera()">✅ Aceptar Carrera</button>
     </div>
+
+    <script>
+        // Simulación: Cuando recibes una ubicación por WhatsApp, ingrésala manualmente aquí
+        function cargarSolicitud() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const ubicacion = urlParams.get('ubicacion');
+            
+            if (ubicacion) {
+                document.getElementById("ubicacionCliente").innerHTML = 
+                    `<a href="https://maps.google.com/?q=${ubicacion}" target="_blank">Ver en mapa</a>`;
+                document.getElementById("solicitud").style.display = "block";
+            }
+        }
+
+        function aceptarCarrera() {
+            alert("Carrera aceptada. El cliente ha sido notificado.");
+            // Aquí iría código para notificar al cliente (en un sistema real)
+        }
+
+        // Cargar datos al abrir la página
+        window.onload = cargarSolicitud;
+    </script>
 </body>
 </html>
