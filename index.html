@@ -1,27 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>🚖 Pedir Moto - Cliente</title>
+    <title>🚖 Pedir Moto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { font-family: Arial; max-width: 500px; margin: 0 auto; padding: 20px; text-align: center; }
-        button { background: #25D366; color: white; border: none; padding: 10px 20px; margin: 10px 0; cursor: pointer; }
+        body { font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; text-align: center; }
+        button { background: #25D366; color: white; border: none; padding: 10px 20px; margin: 10px 0; cursor: pointer; border-radius: 5px; }
+        #ubicacion { margin: 15px 0; font-weight: bold; }
     </style>
 </head>
 <body>
     <h1>🚖 Solicitar Moto</h1>
     <input type="tel" id="telefono" placeholder="Tu número (ej: 75602325)" required>
-    <button onclick="pedirMoto()">📍 Pedir Moto</button>
+    <button onclick="getLocation()">📍 Compartir ubicación</button>
+    <p id="ubicacion"></p>
+    <button onclick="enviarPedido()">Pedir Moto</button>
 
     <script>
-        function pedirMoto() {
-            const telefono = document.getElementById("telefono").value;
-            if (!telefono) return alert("¡Ingresa tu número!");
-            
-            // Envía directamente al WhatsApp DEL CONDUCTOR (TU NÚMERO)
-            const mensaje = `🚨 *Nuevo pedido de moto*%0A%0A📞 Teléfono: ${telefono}%0A📍 Ubicación: (compartir manualmente)`;
-            window.open(`https://wa.me/59172606929?text=${mensaje}`); // ¡Cambia 59172606929 por TU número real!
-            
-            alert("Solicitud enviada. El conductor te contactará pronto.");
+        let ubicacionCliente = "";
+
+        // Obtener ubicación
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        ubicacionCliente = `${position.coords.latitude},${position.coords.longitude}`;
+                        document.getElementById("ubicacion").innerHTML = 
+                            `📍 Ubicación lista: <a href="https://maps.google.com/?q=${ubicacionCliente}" target="_blank">Ver en mapa</a>`;
+                    },
+                    () => alert("Permite acceso a ubicación para continuar")
+                );
+            } else {
+                alert("Tu navegador no soporta geolocalización");
+            }
+        }
+
+        // Enviar pedido al conductor (WhatsApp)
+        function enviarPedido() {
+            const telefonoCliente = document.getElementById("telefono").value;
+            if (!ubicacionCliente) return alert("¡Primero comparte tu ubicación!");
+
+            // Mensaje para el conductor (¡CAMBIA EL NÚMERO DE TELÉFONO POR EL TUYO!)
+            const mensaje = `🚨 *NUEVO PEDIDO DE MOTO*%0A%0A📞 Cliente: ${telefonoCliente}%0A📍 Ubicación: ${ubicacionCliente}%0A%0A<a href="https://maps.google.com/?q=${ubicacionCliente}">VER EN MAPA</a>`;
+            window.open(`https://wa.me/59172606929?text=${mensaje}`);  // Reemplaza 59172606929 con TU NÚMERO
+
+            alert("Pedido enviado. El conductor te contactará pronto.");
         }
     </script>
 </body>
