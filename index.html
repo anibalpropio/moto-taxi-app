@@ -5,46 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body { font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; text-align: center; }
-        button { background: #25D366; color: white; border: none; padding: 10px 20px; margin: 10px 0; cursor: pointer; border-radius: 5px; }
-        #ubicacion { margin: 15px 0; font-weight: bold; }
+        button { background: #25D366; color: white; border: none; padding: 10px 20px; margin: 10px 0; cursor: pointer; }
+        #status { margin-top: 20px; padding: 15px; background: #f0f0f0; border-radius: 8px; display: none; }
     </style>
 </head>
 <body>
     <h1>🚖 Solicitar Moto</h1>
-    <input type="tel" id="telefono" placeholder="Tu número (ej: 75602325)" required>
-    <button onclick="getLocation()">📍 Compartir ubicación</button>
-    <p id="ubicacion"></p>
-    <button onclick="enviarPedido()">Pedir Moto</button>
+    <button onclick="compartirUbicacion()">📍 Compartir Ubicación</button>
+    <div id="status">
+        <p id="statusText">Esperando respuesta del conductor...</p>
+    </div>
 
     <script>
-        let ubicacionCliente = "";
-
-        // Obtener ubicación
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    position => {
-                        ubicacionCliente = `${position.coords.latitude},${position.coords.longitude}`;
-                        document.getElementById("ubicacion").innerHTML = 
-                            `📍 Ubicación lista: <a href="https://maps.google.com/?q=${ubicacionCliente}" target="_blank">Ver en mapa</a>`;
-                    },
-                    () => alert("Permite acceso a ubicación para continuar")
-                );
-            } else {
-                alert("Tu navegador no soporta geolocalización");
-            }
-        }
-
-        // Enviar pedido al conductor (WhatsApp)
-        function enviarPedido() {
-            const telefonoCliente = document.getElementById("telefono").value;
-            if (!ubicacionCliente) return alert("¡Primero comparte tu ubicación!");
-
-            // Mensaje para el conductor (¡CAMBIA EL NÚMERO DE TELÉFONO POR EL TUYO!)
-            const mensaje = `🚨 *NUEVO PEDIDO DE MOTO*%0A%0A📞 Cliente: ${telefonoCliente}%0A📍 Ubicación: ${ubicacionCliente}%0A%0A<a href="https://maps.google.com/?q=${ubicacionCliente}">VER EN MAPA</a>`;
-            window.open(`https://wa.me/72606929?text=${mensaje}`);  // Reemplaza 59172606929 con TU NÚMERO
-
-            alert("Pedido enviado. El conductor te contactará pronto.");
+        function compartirUbicacion() {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    const ubicacion = `${position.coords.latitude},${position.coords.longitude}`;
+                    document.getElementById("status").style.display = "block";
+                    
+                    // Envía solo la ubicación al WhatsApp del conductor
+                    const mensaje = `📍 *Nueva solicitud de moto*%0A%0AUbicación: ${ubicacion}%0A%0A<a href="https://maps.google.com/?q=${ubicacion}">VER EN MAPA</a>`;
+                    window.open(`https://wa.me/59172606929?text=${mensaje}`); // ¡Cambia el número!
+                    
+                    // Simula espera de respuesta (en un sistema real, usa Firebase o similar)
+                    setTimeout(() => {
+                        document.getElementById("statusText").innerHTML = "✅ ¡Moto en camino!<br>El conductor llegará en 5 minutos.";
+                    }, 5000); // Simula 5 segundos de espera
+                },
+                () => alert("Debes permitir acceso a la ubicación")
+            );
         }
     </script>
 </body>
