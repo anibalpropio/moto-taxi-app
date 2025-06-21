@@ -1,54 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>🚖 Pedir Moto</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚖 Pedir Moto - Cliente</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; }
+        body { font-family: Arial; max-width: 500px; margin: 0 auto; padding: 20px; text-align: center; }
         button { background: #25D366; color: white; border: none; padding: 10px 20px; margin: 10px 0; cursor: pointer; }
-        #status { margin-top: 20px; padding: 15px; background: #f0f0f0; border-radius: 8px; display: none; }
     </style>
 </head>
 <body>
     <h1>🚖 Solicitar Moto</h1>
     <input type="tel" id="telefono" placeholder="Tu número (ej: 75602325)" required>
-    <button onclick="getLocation()">📍 Compartir ubicación</button>
-    <p id="ubicacion"></p>
-    <button onclick="enviarSolicitud()">Pedir Moto</button>
-
-    <div id="status">
-        <h3 id="statusText">Buscando conductor...</h3>
-    </div>
+    <button onclick="pedirMoto()">📍 Pedir Moto</button>
 
     <script>
-        let ubicacionCliente = "";
-
-        // Obtener ubicación
-        function getLocation() {
-            navigator.geolocation.getCurrentPosition(position => {
-                ubicacionCliente = `${position.coords.latitude},${position.coords.longitude}`;
-                document.getElementById("ubicacion").innerHTML = 
-                    `📍 Ubicación lista: <a href="https://maps.google.com/?q=${ubicacionCliente}" target="_blank">Ver mapa</a>`;
-            });
-        }
-
-        // Enviar solicitud (simulada)
-        function enviarSolicitud() {
-            const telefonoCliente = document.getElementById("telefono").value;
-            if (!ubicacionCliente) return alert("¡Comparte tu ubicación primero!");
-
-            // Guardar en localStorage (simula "base de datos")
-            localStorage.setItem('solicitud_moto', JSON.stringify({
-                telefono: telefonoCliente,
-                ubicacion: ubicacionCliente,
-                status: "esperando"
-            }));
-
-            document.getElementById("status").style.display = "block";
-            alert("Solicitud enviada. El conductor te contactará por WhatsApp.");
-
-            // Redirigir al conductor (simulación)
-            window.open(`conductor.html?telefono=${telefonoCliente}&ubicacion=${ubicacionCliente}`, "_blank");
+        function pedirMoto() {
+            const telefono = document.getElementById("telefono").value;
+            if (!telefono) return alert("¡Ingresa tu número!");
+            
+            // Envía directamente al WhatsApp DEL CONDUCTOR (TU NÚMERO)
+            const mensaje = `🚨 *Nuevo pedido de moto*%0A%0A📞 Teléfono: ${telefono}%0A📍 Ubicación: (compartir manualmente)`;
+            window.open(`https://wa.me/59172606929?text=${mensaje}`); // ¡Cambia 59172606929 por TU número real!
+            
+            alert("Solicitud enviada. El conductor te contactará pronto.");
         }
     </script>
 </body>
