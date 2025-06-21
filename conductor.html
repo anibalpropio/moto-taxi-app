@@ -2,44 +2,13 @@
 <html>
 <head>
     <title>🚔 Panel Conductor</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
-        #solicitud { background: #f0f0f0; padding: 15px; margin: 10px 0; border-radius: 8px; }
+        body { font-family: Arial; max-width: 600px; margin: 0 auto; padding: 20px; text-align: center; }
     </style>
 </head>
 <body>
-    <h1>🚔 Solicitudes de Clientes</h1>
-    <div id="solicitud">
-        <p><strong>Teléfono:</strong> <span id="clienteTelefono"></span></p>
-        <p><strong>Ubicación:</strong> <span id="clienteUbicacion"></span></p>
-        <button onclick="aceptarCarrera()">✅ Aceptar Carrera</button>
-    </div>
-
-    <script>
-        // Obtener datos de la URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const telefonoCliente = urlParams.get('telefono');
-        const ubicacionCliente = urlParams.get('ubicacion');
-
-        // Mostrar solicitud
-        document.getElementById("clienteTelefono").textContent = telefonoCliente;
-        document.getElementById("clienteUbicacion").innerHTML = 
-            `<a href="https://maps.google.com/?q=${ubicacionCliente}" target="_blank">Ver mapa</a>`;
-
-        // Aceptar carrera
-        function aceptarCarrera() {
-            // Simular actualización de estado
-            localStorage.setItem('solicitud_moto', JSON.stringify({
-                telefono: telefonoCliente,
-                ubicacion: ubicacionCliente,
-                status: "aceptado"
-            }));
-
-            // Enviar WhatsApp al cliente
-            window.open(`https://wa.me/52${telefonoCliente}?text=✅%20Moto%20en%20camino!%20Llegaré%20en%205%20minutos`);
-            alert("¡Carrera aceptada! Se notificó al cliente.");
-        }
-    </script>
+    <h1>🚔 Panel del Conductor</h1>
+    <p>Los clientes te contactarán por WhatsApp directamente.</p>
+    <p>No necesitas abrir esta página, es solo informativa.</p>
 </body>
 </html>
